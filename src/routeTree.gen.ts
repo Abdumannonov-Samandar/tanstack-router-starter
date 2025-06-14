@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as NotFoundImport } from './routes/$not-found'
 import { Route as PokemonIndexImport } from './routes/pokemon/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
 import { Route as DashboardPlaygroundIndexImport } from './routes/dashboard/playground/index'
@@ -23,6 +24,12 @@ import { Route as DashboardPlaygroundHistoryImport } from './routes/dashboard/pl
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
+
+const NotFoundRoute = NotFoundImport.update({
+  id: '/$not-found',
+  path: '/$not-found',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/$not-found': {
+      id: '/$not-found'
+      path: '/$not-found'
+      fullPath: '/$not-found'
+      preLoaderRoute: typeof NotFoundImport
+      parentRoute: typeof rootRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/dashboard'
@@ -102,6 +116,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/$not-found': typeof NotFoundRoute
   '/dashboard': typeof DashboardIndexRoute
   '/pokemon': typeof PokemonIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
@@ -110,6 +125,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/$not-found': typeof NotFoundRoute
   '/dashboard': typeof DashboardIndexRoute
   '/pokemon': typeof PokemonIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
@@ -119,6 +135,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/$not-found': typeof NotFoundRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/pokemon/': typeof PokemonIndexRoute
   '/dashboard/playground/history': typeof DashboardPlaygroundHistoryRoute
@@ -129,6 +146,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$not-found'
     | '/dashboard'
     | '/pokemon'
     | '/dashboard/playground/history'
@@ -136,6 +154,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$not-found'
     | '/dashboard'
     | '/pokemon'
     | '/dashboard/playground/history'
@@ -143,6 +162,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$not-found'
     | '/dashboard/'
     | '/pokemon/'
     | '/dashboard/playground/history'
@@ -152,6 +172,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  NotFoundRoute: typeof NotFoundRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   PokemonIndexRoute: typeof PokemonIndexRoute
   DashboardPlaygroundHistoryRoute: typeof DashboardPlaygroundHistoryRoute
@@ -160,6 +181,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  NotFoundRoute: NotFoundRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   PokemonIndexRoute: PokemonIndexRoute,
   DashboardPlaygroundHistoryRoute: DashboardPlaygroundHistoryRoute,
@@ -177,6 +199,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$not-found",
         "/dashboard/",
         "/pokemon/",
         "/dashboard/playground/history",
@@ -185,6 +208,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/$not-found": {
+      "filePath": "$not-found.tsx"
     },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx"
